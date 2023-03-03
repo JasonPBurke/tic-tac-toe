@@ -1,0 +1,61 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-block-size: 100dvh;
+  display: grid;
+  place-items: center;
+  background-color: #ade2d0ff;
+}
+
+/* .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.game-board-grid {
+  height: 550px;
+  width: 550px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  /* border: 3px solid red;
+  outline: 5px solid blueviolet; */
+  outline-offset: 10px;
+  /* background-color: beige; */
+  justify-items: center;
+  align-items: center;
+}
+
+.piece {
+  height: 150px;
+  width: 150px;
+  background-color: #ff6348ff;
+  /* border: 1px solid black; */
+  border-radius: 0.25rem;
+  box-shadow: -2px 2px 10px rgb(122, 46, 33);
+  display: grid;
+  place-items: center;
+
+  transform-style: preserve-3d;
+  transform: perspective(5000px) rotateX(var(--rotateX)) rotateY(var(--rotateY));
+}
+
+.player-img {
+  height: 125px;
+  transform: translateZ(25px);
+  position: relative;
+  filter: drop-shadow(
+    -20px 20px 5px rgba(0, 0, 0, 0.5)
+  ); /* must change w/.piece rotateX/Y vals */
+}
