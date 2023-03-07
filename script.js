@@ -49,7 +49,7 @@ const gameBoard = (() => {
 
     const playerImg = event.currentTarget.childNodes[1].getAttribute('src');
     event.currentTarget.classList.toggle('no-click');
-    event.currentTarget.childNodes[1].style.opacity = '0.25';
+    event.currentTarget.childNodes[1].style.opacity = '0.35';
     const madeLastMove = players.length === 0 ? false : true;
     players.push(playerFactory(players.length + 1, playerImg, madeLastMove));
     if (players.length > 1) {
@@ -70,6 +70,7 @@ const gameBoard = (() => {
   function resetBoard() {
     board.fill(0);
     gameBoardSquares.forEach((square, i) => {
+      square.style.pointerEvents = 'auto';
       square.childNodes[1].setAttribute(
         'src',
         `./images/${characterArray[i]}.ico`
@@ -78,25 +79,37 @@ const gameBoard = (() => {
     newGame = true;
   }
 
+  const winArray = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+    [0, 4, 8],
+  ];
+
   function checkForWinner() {
-    board.slice(0, 3).every((val, i, arr) => val !== 0 && val === arr[0]) // {0,1,2}
-      ? alertWinner([0, 1, 2])
-      : board.slice(3, 6).every((val, i, arr) => val !== 0 && val === arr[0]) // {3,4,5}
-      ? alertWinner()
-      : board.slice(6, 9).every((val, i, arr) => val !== 0 && val === arr[0]) // {6,7,8}
-      ? alertWinner()
-      : console.log('no winner');
-    // board.slice(0, 3).every((val, arr) => val === arr[0]) ? alert('winner') : {0,3,6}
-    // board.slice(0, 3).every((val, arr) => val === arr[0]) ? alert('winner') : {1,4,7}
-    // board.slice(0, 3).every((val, arr) => val === arr[0]) ? alert('winner') : {2,5,8}
-    // board.slice(0, 3).every((val, arr) => val === arr[0]) ? alert('winner') : {2,4,6}
-    // board.slice(0, 3).every((val, arr) => val === arr[0]) ? alert('winner') : {0,4,8}
+    winArray.forEach((winCheck) => {
+      let bSquares = board.filter((el, i) => winCheck.some((j) => i === j));
+      console.log('winCheck: ', winCheck);
+      console.log('bSquares', bSquares);
+      if (bSquares.every((val, i, arr) => val !== 0 && val === arr[0])) {
+        alertWinner(winCheck);
+      }
+    });
   }
 
   function alertWinner(winArray) {
     gameBoardSquares.forEach((square) => {
-      console.log(square.getAttribute('index'));
-      if (square.getAttribute('index') in winArray) {
+      square.style.pointerEvents = 'none';
+      squareIndex = parseInt(square.getAttribute('index'));
+      console.log(typeof squareIndex);
+      if (winArray.includes(squareIndex)) {
+        console.log(square.getAttribute('index'));
+        square.style.scale = 1.1;
+        square.style.backgroundColor = 'rgba(248,248,255, .5)';
       }
     });
   }
@@ -130,7 +143,7 @@ const gameBoard = (() => {
     }
   }
 
-  return { resetBoard, gameBoardSquares, clearBoard };
+  return { resetBoard, gameBoardSquares, clearBoard, board };
 })();
 
 // gameBoard.pickCharacter();
