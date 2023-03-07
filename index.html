@@ -11,13 +11,10 @@
   <body>
     <header class="header1">
       <h1>Noughts And Crosses</h1>
-      <p>
-        The most neutral game in the universe. Brought to you by momcorp
-        &copy3023
-      </p>
+      <p>The most neutral game in the universe.</p>
     </header>
     <div class="flex-container">
-      <div class="player-one-container">
+      <div class="player-one-container" player-index="1">
         <h2>Player 1</h2>
       </div>
       <div class="game-board-grid">
@@ -27,7 +24,7 @@
         <div index="1" class="piece">
           <img class="player-img" src="./images/Fry.ico" alt="" />
         </div>
-        <div index="2" class="piece test-piece">
+        <div index="2" class="piece">
           <img class="player-img" src="./images/Leela.ico" alt="" />
         </div>
         <div index="3" class="piece">
@@ -49,11 +46,17 @@
           <img class="player-img" src="./images/Nibbler.ico" alt="" />
         </div>
       </div>
-      <div class="player-two-container">
+      <div class="player-two-container" player-index="2">
         <h2>Player 2</h2>
       </div>
+      <h2 class="winner hidden">WINNER</h2>
+      <h2 class="tie hidden">IT'S A TIE</h2>
     </div>
-    <button class="new-game">NEW GAME</button>
-    <h2 class="choose-characters hidden">CHOOSE YOUR CHARACTERS</h2>
+    <div class="game-buttons">
+      <button class="new-game">NEW GAME</button>
+      <h2 class="choose-characters hidden">CHOOSE YOUR CHARACTERS</h2>
+      <button class="play-again hidden">PLAY AGAIN</button>
+    </div>
   </body>
+  <footer class="footer">Brought to you by momcorp &copy3023</footer>
 </html>

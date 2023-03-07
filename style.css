@@ -64,7 +64,6 @@ body {
   background-size: cover;
   background-position: center center;
   color: var(--primaryTextColor);
-  /* background-color: #ade2d0ff; */
 }
 
 .flex-container {
@@ -73,7 +72,6 @@ body {
   gap: clamp(1rem, 2.5rem, 3rem);
   align-items: center;
   justify-content: center;
-  /* border: 2px solid red; */
 }
 
 .player-one-container,
@@ -84,6 +82,7 @@ body {
   max-width: 350px;
   height: 500px;
   border-radius: 1rem;
+  display: none;
 }
 
 .player-one-container > h2,
@@ -125,6 +124,19 @@ body {
   height: 125px;
   transform: translateZ(55px);
   filter: drop-shadow(-20px 20px 5px rgba(0, 0, 0, 0.5));
+}
+
+.game-buttons {
+  min-height: 100px;
+}
+
+.tie,
+.winner {
+  position: absolute;
+  font-size: 15rem;
+  padding: 0 2rem;
+  background-color: rgba(95, 83, 105, 0.331);
+  border-radius: 1rem;
 }
 
 .hidden {
