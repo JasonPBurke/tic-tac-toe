@@ -16,10 +16,10 @@ const gameBoard = (() => {
     { name: 'Leela', sound: './sounds/leela.mp3' },
     { name: 'Farnsworth', sound: './sounds/farnsworth.mp3' },
     { name: 'Zoidberg', sound: './sounds/zoidberg.mp3' },
-    { name: 'Hermes', sound: './sounds/hermes.mp3' },
+    { name: 'Hermes', sound: './sounds/hermes.m4a' },
     { name: 'Amy', sound: './sounds/amy.mp3' },
-    { name: 'Scruffy', sound: './sounds/scruffy.mp3' },
-    { name: 'Nibbler', sound: './sounds/nibbler.mp3' },
+    { name: 'Scruffy', sound: './sounds/scruffy.m4a' },
+    { name: 'Nibbler', sound: './sounds/nibbler.m4a' },
   ];
 
   chooseCharacterPara = document.querySelector('.choose-characters');
