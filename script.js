@@ -2,7 +2,6 @@ const playerFactory = (playerNumber, playerIcon = null, lastMove = false) => {
   const number = playerNumber;
   const icon = playerIcon;
   let madeLastMove = lastMove;
-  console.log({ number, icon, madeLastMove });
   return { number, icon, madeLastMove };
 };
 
@@ -12,15 +11,15 @@ const gameBoard = (() => {
   let players = [];
 
   const characterArray = [
-    'Bender',
-    'Fry',
-    'Leela',
-    'Farnsworth',
-    'Zoidberg',
-    'Hermes',
-    'Amy',
-    'Scruffy',
-    'Nibbler',
+    { name: 'Bender', sound: './sounds/bender.mp3' },
+    { name: 'Fry', sound: './sounds/fry.mp3' },
+    { name: 'Leela', sound: './sounds/leela.mp3' },
+    { name: 'Farnsworth', sound: './sounds/farnsworth.mp3' },
+    { name: 'Zoidberg', sound: './sounds/zoidberg.mp3' },
+    { name: 'Hermes', sound: './sounds/hermes.mp3' },
+    { name: 'Amy', sound: './sounds/amy.mp3' },
+    { name: 'Scruffy', sound: './sounds/scruffy.mp3' },
+    { name: 'Nibbler', sound: './sounds/nibbler.mp3' },
   ];
 
   chooseCharacterPara = document.querySelector('.choose-characters');
@@ -52,13 +51,13 @@ const gameBoard = (() => {
     }
 
     const playerImg = event.currentTarget.childNodes[1].getAttribute('src');
-    event.currentTarget.classList.toggle('no-click');
+    event.currentTarget.classList.add('no-click');
     event.currentTarget.childNodes[1].style.opacity = '0.35';
     const madeLastMove = players.length === 0 ? false : true;
     players.push(playerFactory(players.length + 1, playerImg, madeLastMove));
     if (players.length > 1) {
       gameBoardSquares.forEach((square) => {
-        square.style.pointerEvents = 'auto';
+        square.classList.remove('no-click');
       });
       document.querySelector('.choose-characters').classList.add('hidden');
       setTimeout(clearBoard, 250);
@@ -80,11 +79,11 @@ const gameBoard = (() => {
       square.removeEventListener('click', setPlayer);
       square.style.scale = 1;
       square.style.backgroundColor = 'rgba(75, 41, 123, 0.575)';
-      square.style.pointerEvents = 'auto';
+      square.classList.remove('no-click');
       square.style.opacity = '1';
       square.childNodes[1].setAttribute(
         'src',
-        `./images/${characterArray[i]}.ico`
+        `./images/${characterArray[i].name}.ico`
       );
     });
     pickCharacter();
@@ -101,23 +100,30 @@ const gameBoard = (() => {
     [0, 4, 8],
   ];
 
-  function checkForWinner() {
+  function checkForWinner(player) {
     winArray.forEach((winCheck) => {
       let bSquares = board.filter((el, i) => winCheck.some((j) => i === j));
       if (bSquares.every((val, i, arr) => val !== 0 && val === arr[0])) {
-        console.log('here');
-        alertWinner(winCheck);
+        const re = /(?<=s\/).*(?=[\.])/;
+        const characterName = re.exec(player.icon)[0];
+        let audio;
+        characterArray.forEach((character) => {
+          if (characterName === character.name) {
+            audio = new Audio(character.sound);
+          }
+        });
+        audio.play();
+        alertWinner(winCheck, player);
       }
     });
     if (!board.includes(0)) {
-      console.log('also here');
       alertTie();
     }
   }
 
   function alertTie() {
     gameBoardSquares.forEach((square) => {
-      square.style.pointerEvents = 'none';
+      square.classList.add('no-click');
       setTimeout(() => {
         document.querySelector('.tie').classList.remove('hidden');
         document.querySelector('.play-again').classList.remove('hidden');
@@ -125,10 +131,19 @@ const gameBoard = (() => {
     });
   }
 
-  function alertWinner(winArray) {
+  function alertWinner(winArray, p) {
     board[1] = 0;
+    let name;
+    players.forEach((player) => {
+      if (player.madeLastMove) {
+        const re = /(?<=s\/).*(?=[\.])/;
+        name = re.exec(p.icon)[0];
+        document.querySelector('.winner').innerHTML = `${name} Wins`;
+      }
+    });
+    let sound;
     gameBoardSquares.forEach((square) => {
-      square.style.pointerEvents = 'none';
+      square.classList.add('no-click');
       squareIndex = parseInt(square.getAttribute('index'));
       if (winArray.includes(squareIndex)) {
         square.style.scale = 1.1;
@@ -162,9 +177,9 @@ const gameBoard = (() => {
           square.childNodes[1].setAttribute('src', player.icon);
           square.childNodes[1].style.opacity = '1';
 
-          square.classList.toggle('no-click');
+          square.classList.add('no-click');
           player.madeLastMove = true;
-          checkForWinner();
+          checkForWinner(player);
         }
       });
     }
