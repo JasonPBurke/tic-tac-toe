@@ -139,6 +139,7 @@ body {
   padding: 0 2rem;
   background-color: rgba(95, 83, 105, 0.331);
   border-radius: 1rem;
+  /* animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; */
 }
 
 .hidden {

@@ -9,6 +9,16 @@ const gameBoard = (() => {
   const gameBoardSquares = document.querySelectorAll('.piece');
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let players = [];
+  const winArray = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+    [0, 4, 8],
+  ];
 
   const characterArray = [
     { name: 'Bender', sound: './sounds/bender.mp3' },
@@ -22,15 +32,15 @@ const gameBoard = (() => {
     { name: 'Nibbler', sound: './sounds/nibbler.m4a' },
   ];
 
-  chooseCharacterPara = document.querySelector('.choose-characters');
-  newGameBtn = document.querySelector('.new-game');
+  let chooseCharacterPara = document.querySelector('.choose-characters');
+  let newGameBtn = document.querySelector('.new-game');
   newGameBtn.addEventListener('click', () => {
     newGameBtn.classList.add('hidden');
     chooseCharacterPara.classList.remove('hidden');
     pickCharacter();
   });
 
-  playAgainBtn = document.querySelector('.play-again');
+  let playAgainBtn = document.querySelector('.play-again');
   playAgainBtn.addEventListener('click', () => {
     playAgainBtn.classList.add('hidden');
     document.querySelector('.winner').classList.add('hidden');
@@ -41,6 +51,8 @@ const gameBoard = (() => {
 
   function pickCharacter() {
     gameBoardSquares.forEach((square) => {
+      square.classList.remove('no-click');
+
       square.addEventListener('click', setPlayer);
     });
   }
@@ -89,17 +101,6 @@ const gameBoard = (() => {
     pickCharacter();
   }
 
-  const winArray = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [0, 4, 8],
-  ];
-
   function checkForWinner(player) {
     winArray.forEach((winCheck) => {
       let bSquares = board.filter((el, i) => winCheck.some((j) => i === j));
@@ -133,15 +134,13 @@ const gameBoard = (() => {
 
   function alertWinner(winArray, p) {
     board[1] = 0;
-    let name;
     players.forEach((player) => {
       if (player.madeLastMove) {
         const re = /(?<=s\/).*(?=[\.])/;
-        name = re.exec(p.icon)[0];
+        let name = re.exec(p.icon)[0];
         document.querySelector('.winner').innerHTML = `${name} Wins`;
       }
     });
-    let sound;
     gameBoardSquares.forEach((square) => {
       square.classList.add('no-click');
       squareIndex = parseInt(square.getAttribute('index'));
@@ -176,7 +175,6 @@ const gameBoard = (() => {
           board[square.getAttribute('index')] = player.number;
           square.childNodes[1].setAttribute('src', player.icon);
           square.childNodes[1].style.opacity = '1';
-
           square.classList.add('no-click');
           player.madeLastMove = true;
           checkForWinner(player);
@@ -184,7 +182,7 @@ const gameBoard = (() => {
       });
     }
   }
-  return { gameBoardSquares, board };
+  return { gameBoardSquares };
 })();
 
 // mouse tracking code
